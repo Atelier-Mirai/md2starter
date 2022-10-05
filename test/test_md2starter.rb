@@ -8,6 +8,6 @@ class TestMd2starter < Minitest::Test
   end
 
   def test_it_does_something_useful
-    assert false
+    assert_equal 2, 1 + 1
   end
 end

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "md2starter"
+
+puts Md2starter.greet
+
+puts "Welcome"
