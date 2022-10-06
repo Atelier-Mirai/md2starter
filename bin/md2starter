@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# Usage: md2review [--parse-<extension>...] [--render-<extension>...] [<file>...]
+#
+# Convert one or more Markdown files to Re:VIEW and write to standard output. With
+# no <file> or when <file> is '-', read Markdown source text from standard input.
+# With <extension>s, perform additional Markdown processing before writing output. desu
+
+require "md2starter"
+require "md2starter/version"
+# require "md2starter/command"
+
+# if ARGV.include?("--help")
+#   File.read(__FILE__).split("\n").grep(/^# /).each do |line|
+#     puts line[2..-1]
+#   end
+#   exit 0
+# end
+
+MD2Starter.convert!("hi")
+# MD2Starter.convert!(ARGV[0])
+# MD2Starter.convert!(ARGV[1])
+# MD2Starter.convert!(ARGV[2])
+# MD2Starter.convert!(ARGV[3])
+# MD2Starter.convert!(ARGV[4])
+
+# p $:
+# p $LOAD_PATH
+# p $LOAD_PATH.unshift
+# p "+++++++++++++++++"
+# p File.dirname(__FILE__) + "/../lib"
+# p "+++++++++++++++++"
+# p $LOAD_PATH.unshift File.dirname(__FILE__) + "/../lib"
+
+files = '.gitignore.travis.ymlGemfileREADME.mdRakefilebin/erb2slimbin/html2slimhelper.rbhtml2slim.gemspeclib/html2slim.rblib/html2slim/command.rblib/html2slim/converter.rblib/html2slim/hpricot_monkeypatches.rblib/html2slim/version.rbpkg/html2slim-0.0.1.gempkg/html2slim-0.0.2.gempkg/html2slim-0.0.3.gempkg/html2slim-0.0.4.gempkg/html2slim-0.0.8.gempkg/html2slim-0.1.1.gempkg/html2slim-0.2.0.gemtest/fixtures/class_with_space.htmltest/fixtures/class_with_space.slimtest/fixtures/devise-template-2.erbtest/fixtures/devise-template-2.slimtest/fixtures/devise-template.erbtest/fixtures/devise-template.slimtest/fixtures/div_with_class_without_id.htmltest/fixtures/div_with_class_without_id.slimtest/fixtures/div_with_id_without_class.htmltest/fixtures/div_with_id_without_class.slimtest/fixtures/erb-example.html.erbtest/fixtures/erb-example.html.slimtest/fixtures/erb_elsif.erbtest/fixtures/erb_elsif.slimtest/fixtures/multiline_block.erbtest/fixtures/multiline_block.slimtest/fixtures/slim-lang.htmltest/fixtures/slim-lang.slimtest/helper.rbtest/test_html2slim.rb'
+
+files.split("\x0").reject do |f|
+  f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+end
+p "+++++++++++++++++"
+p files

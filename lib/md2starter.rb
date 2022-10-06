@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require_relative "md2starter/version"
+require_relative "md2starter/converter"
 
-module Md2starter
-  class Error < StandardError; end
-  # Your code goes here...
-
-  def self.greet
-    "Hello"
+module MD2Starter
+  class << self
+    def convert!(input)
+      Converter.new.hello(input)
+    end
   end
 end
