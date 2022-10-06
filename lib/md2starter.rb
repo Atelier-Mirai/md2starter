@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "md2starter/version"
-require_relative "md2review/markdown"
+require_relative "md2starter/markdown"
 
 module MD2Starter
   class << self
     def convert!(input)
-      # Converter.new(input)
-      open(input).read.downcase
-
       render_extensions = {}
       render_extensions[:link_in_footnote] = false
       render_extensions[:table_caption] = true
@@ -22,7 +18,8 @@ module MD2Starter
       parse_extensions[:autolink] = true
 
       md = MD2Starter::Markdown.new(render_extensions, parse_extensions)
-      starter_doc = md.render(input)
+      md_doc = open(input).read
+      starter_doc = md.render(md_doc)
     end
   end
 end
