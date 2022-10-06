@@ -1,37 +1,40 @@
-# Md2starter
+# MD2Starter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/md2starter`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+MD2Starter is a CLI tool to convert from Markdown into [Re:VIEW Starter](https://kauplan.org/reviewstarter/).
+This command uses Redcarpet gem to parse markdown.
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add md2starter
-
-If bundler is not being used to manage dependencies, install the gem by executing:
+Install it yourself as:
 
     $ gem install md2starter
 
 ## Usage
 
-TODO: Write usage instructions here
+You may convert files using the included executables `md2starter`.
 
-## Development
+    $ md2starter -h
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/md2starter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/md2starter/blob/master/CODE_OF_CONDUCT.md).
+    Usage: md2starter INPUT_FILENAME_OR_DIRECTORY [OUTPUT_FILENAME_OR_DIRECTORY] [options]
+            --trace                      Show a full traceback on error
+        -d, --delete                     Delete Markdown files
+        -h, --help                       Show this message
+        -v, --version                    Print version
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-## Code of Conduct
+## History
 
-Everyone interacting in the Md2starter project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/md2starter/blob/master/CODE_OF_CONDUCT.md).
+### v1.0.0
+- Initial release
+
+## Author
+
+[Atelier Mirai](https://atelier-mirai.net)
+
+## OFFICIAL REPOSITORY
+
+[https://github.com/Atelier-Mirai/md2starter](https://github.com/Atelier-Mirai/md2starter)
+
