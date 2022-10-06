@@ -1,7 +1,7 @@
 require 'optparse'
-require 'html2slim'
+require 'md2starter'
 
-module HTML2Slim
+module MD2Starter
   class Command
 
     def initialize(args)
@@ -24,16 +24,13 @@ module HTML2Slim
 
     protected
 
-    def format
-      @format ||= (self.class.to_s =~ /ERB/ ? :erb : :html)
-    end
-
-    def command_name
-      @command_name ||= format == :html ? "html2slim" : "erb2slim"
-    end
+    # def format
+    #   @format ||= (self.class.to_s =~ /ERB/ ? :erb : :html)
+    #   p self.class.to_s
+    # end
 
     def set_opts(opts)
-      opts.banner = "Usage: #{command_name} INPUT_FILENAME_OR_DIRECTORY [OUTPUT_FILENAME_OR_DIRECTORY] [options]"
+      opts.banner = "Usage: md2starter INPUT_FILENAME_OR_DIRECTORY [OUTPUT_FILENAME_OR_DIRECTORY] [options]"
 
       opts.on('--trace', :NONE, 'Show a full traceback on error') do
         @options[:trace] = true
@@ -45,11 +42,11 @@ module HTML2Slim
       end
 
       opts.on_tail('-v', '--version', 'Print version') do
-        puts "#{command_name} #{HTML2Slim::VERSION}"
+        puts "md2starter #{MD2Starter::VERSION}"
         exit
       end
 
-      opts.on('-d', '--delete', "Delete #{format.upcase} files") do
+      opts.on('-d', '--delete', "Delete markdown files") do
         @options[:delete] = true
       end
     end
@@ -63,7 +60,7 @@ module HTML2Slim
       @options[:input] = file = "-" unless file
 
       if File.directory?(@options[:input])
-        Dir["#{@options[:input]}/**/*.#{format}"].each { |file| _process(file, destination) }
+        Dir["#{@options[:input]}/**/*.md"].each { |file| _process(file, destination) }
       else
         _process(file, destination)
       end
@@ -77,16 +74,16 @@ module HTML2Slim
 
     def _process(file, destination = nil)
       require 'fileutils'
-      slim_file = file.sub(/\.#{format}/, '.slim')
+      starter_file = file.sub(/\.md/, '.re')
 
       if input_is_dir? && destination
-        FileUtils.mkdir_p(File.dirname(slim_file).sub(@options[:input].chomp('/'), destination))
-        slim_file.sub!(@options[:input].chomp('/'), destination)
+        FileUtils.mkdir_p(File.dirname(starter_file).sub(@options[:input].chomp('/'), destination))
+        starter_file.sub!(@options[:input].chomp('/'), destination)
       else
-        slim_file = destination || slim_file
+        starter_file = destination || starter_file
       end
       
-      fail(ArgumentError, "Source and destination files can't be the same.") if @options[:input] != '-' && file == slim_file
+      fail(ArgumentError, "Source and destination files can't be the same.") if @options[:input] != '-' && file == starter_file
 
       in_file = if @options[:input] == "-"
         $stdin
@@ -94,15 +91,11 @@ module HTML2Slim
         File.open(file, 'r')
       end
 
-      @options[:output] = slim_file && slim_file != '-' ? File.open(slim_file, 'w') : $stdout
-      @options[:output].puts HTML2Slim.convert!(in_file, format)
+      @options[:output] = starter_file && starter_file != '-' ? File.open(starter_file, 'w') : $stdout
+      @options[:output].puts MD2Starter.convert!(in_file)
       @options[:output].close
 
       File.delete(file) if @options[:delete]
     end
-  end
-  class HTMLCommand < Command
-  end
-  class ERBCommand < Command
   end
 end

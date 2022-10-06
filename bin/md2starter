@@ -1,20 +1,6 @@
 #!/usr/bin/env ruby
-# Usage: md2review [--parse-<extension>...] [--render-<extension>...] [<file>...]
-#
-# Convert one or more Markdown files to Re:VIEW and write to standard output. With
-# no <file> or when <file> is '-', read Markdown source text from standard input.
-# With <extension>s, perform additional Markdown processing before writing output. desu
+$LOAD_PATH.prepend File.dirname(__FILE__) + "/../lib"
+require "md2starter/command"
 
-require "md2starter"
-require "md2starter/version"
-# require "md2starter/command"
-
-# if ARGV.include?("--help")
-#   File.read(__FILE__).split("\n").grep(/^# /).each do |line|
-#     puts line[2..-1]
-#   end
-#   exit 0
-# end
-
-MD2Starter.convert!("hi")
-# MD2Starter.convert!(ARGV[0])
+cmd = MD2Starter::Command.new(ARGV)
+cmd.run

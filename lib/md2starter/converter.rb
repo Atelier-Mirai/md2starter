@@ -1,7 +1,11 @@
 module MD2Starter
   class Converter
-    def hello(input)
-      puts "Welcome converter #{input}"
+    def to_s
+      @starter
+    end
+
+    def initialize(markdown)
+      @starter = open(markdown).read.upcase
     end
   end
 end

@@ -5,7 +5,7 @@ require_relative "lib/md2starter/version"
 
 Gem::Specification.new do |spec|
   spec.name = "md2starter"
-  spec.version = Md2starter::VERSION
+  spec.version = MD2Starter::VERSION
   spec.authors = ["Atelier Mirai"]
   spec.email = ["contact@atelier-mirai.net"]
   spec.summary = "A converter from Markdown to Re:VIEW Starter."

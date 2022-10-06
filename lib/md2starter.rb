@@ -6,7 +6,7 @@ require_relative "md2starter/converter"
 module MD2Starter
   class << self
     def convert!(input)
-      Converter.new.hello(input)
+      Converter.new(input)
     end
   end
 end
