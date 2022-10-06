@@ -2,9 +2,9 @@
 
 require "test_helper"
 
-class TestMd2starter < Minitest::Test
+class TestMD2Starter < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Md2starter::VERSION
+    refute_nil ::MD2Starter::VERSION
   end
 
   def test_it_does_something_useful
