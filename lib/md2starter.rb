@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "md2starter/markdown"
 
 module MD2Starter

@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'digest/md5'
 require 'uri'
 
@@ -26,7 +28,8 @@ module Redcarpet
       def preprocess(text)
         b_counter = -1
         while %r|\$\$(.+?)\$\$| =~ text
-          text.sub!(%r|\$\$(.+?)\$\$|) do
+          t = +text
+          t.sub!(%r|\$\$(.+?)\$\$|) do
             b_counter += 1
             @math_block_buf[b_counter] = $1
             "〓MATHBLOCK:#{b_counter}:〓"
@@ -35,7 +38,8 @@ module Redcarpet
 
         i_counter = -1
         while %r|\$(.+?)\$| =~ text
-          text.sub!(%r|\$(.+?)\$|) do
+          t = +text
+          t.sub!(%r|\$(.+?)\$|) do
             i_counter += 1
             @math_inline_buf[i_counter] = $1
             "〓MATHINLINE:#{i_counter}:〓"
@@ -45,7 +49,8 @@ module Redcarpet
         # るび
         r_counter = -1
         while %r|\{(.+?\|.+?)\}| =~ text
-          text.sub!(%r|\{(.+?\|.+?)\}|) do
+          t = +text
+          t.sub!(%r|\{(.+?\|.+?)\}|) do
             r_counter += 1
             @ruby_buf[r_counter] = $1
             "〓RUBY:#{r_counter}:〓"
