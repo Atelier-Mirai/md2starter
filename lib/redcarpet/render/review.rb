@@ -86,25 +86,71 @@ module Redcarpet
       end
       alias_method :escape_comma, :escape_href
 
+      # codespan
+      ########################################################################
+      def codespan(code)
+        "@<code>{#{escape_inline(code)}}"
+      end
+
       # block code
       ########################################################################
       def block_code(code, language)
         code_text = normal_text(code).chomp
-        caption = ""
+        lang      = ""
+        caption   = ""
+
         if language
-          if language =~ /caption=\"(.*)\"/
-            caption = "["+$1+"]"
-          else
-            caption = "[][#{language}]"
-          end
+          # lang, caption = "java: main.java".split(":").map(&:strip)
+          lang, caption = language.split(":").map(&:strip)
+
+          # if language =~ /caption=\"(.*)\"/
+          #   caption = "["+$1+"]"
+          # else
+            # caption = "[][#{language}]"
+          # end
         end
 
-        if @cmd && (language == "shell-session" || language == "console")
-          "\n//cmd[][]{\n#{code_text}\n//}\n"
-        elsif language == "math"
-          "\n//texequation[][]{\n#{code.chomp}\n//}\n"
+        if lang == "math"
+          "//texequation[][#{caption}]{\n#{code.chomp}\n//}\n\n"
+        elsif lang == "output"
+          "//output[][#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "terminal"
+          "//terminal[][#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "note"
+          "//note[][#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "memo"
+          "//memo[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "tip"
+          "//tip[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "info"
+          "//info[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "warning"
+          "//warning[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "important"
+          "//important[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "caution"
+          "//caution[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "notice"
+          "//notice[#{caption}]{\n#{code_text}\n//}\n\n"
+        elsif lang == "column"
+          "===[column] #{caption}\n#{code_text}\n\n===[/column]\n\n"
+        elsif lang == "flushright"
+          "//flushright{\n#{code_text}\n//}\n\n"
+        elsif lang == "centering"
+          "//centering{\n#{code_text}\n//}\n\n"
+        elsif lang == "abstract"
+          if caption.nil? || caption == "toc=on"
+            "//abstract{\n#{code_text}\n//}\n\n//makechaptitlepage[toc=on]\n\n"
+          else
+            "//abstract{\n#{code_text}\n//}\n\n"
+          end
+        elsif lang == "chapterauthor"
+          "//chapterauthor[#{caption}]\n\n"
+        elsif lang == "include"
+          filename = File&.basename(caption.to_s)
+          "//list[][#{filename}][file=source/#{caption},1]{\n//}\n\n"
         else
-          "\n//list[#{caption}][]{\n#{code_text}\n//}\n"
+          "//list[][#{caption}][1]{\n#{code_text}\n//}\n\n"
         end
       end
 
@@ -127,11 +173,6 @@ module Redcarpet
         "\n//list[][]{\n#{warning}\n#{html_text}\n//}\n"
       end
 
-      # codespan
-      ########################################################################
-      def codespan(code)
-        "@<code>{#{escape_inline(code)}}"
-      end
 
       # header
       ########################################################################
@@ -143,7 +184,7 @@ module Redcarpet
       ########################################################################
       def paragraph(text)
         if text =~ /\ATable:(.*)\z/
-          @table_caption = $1.strip  
+          @table_caption = $1.strip
           "" # no output line
         else
           # "\n\n#{text}\n\n"
@@ -237,7 +278,13 @@ module Redcarpet
           # content = escape_inline(remove_inline_markups(content))
           # "@<href>{#{escape_href(link)},#{escape_comma(content)}}"
           # "@<href>{#{escape_href(link)},#{content}}"
-          "@<href>{#{link},#{content}}"
+          if content == "include"
+            # [include](lecture1/hello.c)
+            filename = File.basename(link)
+            "//list[][#{filename}][file=source/#{link},1]{\n//}\n"
+          else
+            "@<href>{#{link},#{content}}"
+          end
         end
       end
 
@@ -349,7 +396,7 @@ module Redcarpet
         while %r|〓RUBY:(\d+):〓| =~ text
           text.sub!(%r|〓RUBY:(\d+):〓|){ ruby(@ruby_buf[$1.to_i]) }
         end
-        
+
         text + @links.map { |key, link| footnote_def(link, key) }.join
       end
 

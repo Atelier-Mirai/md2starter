@@ -5,7 +5,7 @@ module MD2Starter
   class Markdown
     def initialize(render_options, parser_options)
       ## Redcarpet only
-      render = Redcarpet::Render::ReVIEW.new(render_options)
+      render    = Redcarpet::Render::ReVIEW.new(render_options)
       @markdown = Redcarpet::Markdown.new(render, parser_options)
     end
 

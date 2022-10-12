@@ -17,11 +17,6 @@ module MD2Starter
 
       md = MD2Starter::Markdown.new(render_extensions, parse_extensions)
       md_doc = open(input).read
-
-      p '----'
-      puts md_doc.frozen?
-      p "----"
-      
       starter_doc = md.render(md_doc)
     end
   end
