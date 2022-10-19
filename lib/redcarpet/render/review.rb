@@ -11,13 +11,8 @@ module Redcarpet
       ########################################################################
       def initialize(render_extensions={})
         super()
-        @link_in_footnote = render_extensions[:link_in_footnote]
-
+        @math = render_extensions[:math]
         @links = {}
-        @cmd = render_extensions[:enable_cmd]
-
-        @table_rlc = nil
-
         @math_inline_buf = []
         @math_block_buf = []
         @ruby_buf = []
@@ -35,12 +30,14 @@ module Redcarpet
           end
         end
 
-        i_counter = -1
-        while %r|\$(.+?)\$| =~ text
-          text.sub!(%r|\$(.+?)\$|) do
-            i_counter += 1
-            @math_inline_buf[i_counter] = $1
-            "〓MATHINLINE:#{i_counter}:〓"
+        if @math
+          i_counter = -1
+          while %r|\$(.+?)\$| =~ text
+            text.sub!(%r|\$(.+?)\$|) do
+              i_counter += 1
+              @math_inline_buf[i_counter] = $1
+              "〓MATHINLINE:#{i_counter}:〓"
+            end
           end
         end
 
@@ -265,26 +262,15 @@ module Redcarpet
       # link
       ########################################################################
       def autolink(link, link_type)
-        # "@<href>{#{escape_href(link)}}"
         "@<href>{#{link}}"
       end
 
       def link(link, title, content)
-        if @link_in_footnote
-          key = Digest::MD5.hexdigest(link)
-          @links[key] ||= link
-          footnotes(content) + footnote_ref(key)
+        if content == "include"
+          filename = File.basename(link)
+          "//list[][#{filename}][file=source/#{link},1]{\n//}\n"
         else
-          # content = escape_inline(remove_inline_markups(content))
-          # "@<href>{#{escape_href(link)},#{escape_comma(content)}}"
-          # "@<href>{#{escape_href(link)},#{content}}"
-          if content == "include"
-            # [include](lecture1/hello.c)
-            filename = File.basename(link)
-            "//list[][#{filename}][file=source/#{link},1]{\n//}\n"
-          else
-            "@<href>{#{link},#{content}}"
-          end
+          "@<href>{#{link},#{content}}"
         end
       end
 

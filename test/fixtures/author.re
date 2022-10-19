@@ -1,4 +1,5 @@
-=
+
+= 
 
 執筆者です
 
@@ -12,17 +13,17 @@
 ナウシカが書きました.js
 }
 
-
 //list[][][1]{
 htmlです
 //}
+
 @<code>{html: index.html
 htmlです
 }
 
 @<code>{codespan}
 
-
 //list[][][1]{
 ブロックです
 //}
+

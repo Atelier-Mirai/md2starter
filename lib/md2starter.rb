@@ -2,10 +2,11 @@ require_relative "md2starter/markdown"
 
 module MD2Starter
   class << self
-    def convert!(input)
+    def convert!(input, options)
       render_extensions = {}
       render_extensions[:link_in_footnote] = false
       render_extensions[:table_caption] = true
+      render_extensions[:math] = options[:math] ? true : false
 
       parse_extensions = {}
       parse_extensions[:tables] = true
@@ -15,8 +16,8 @@ module MD2Starter
       parse_extensions[:no_intra_emphasis] = true
       parse_extensions[:autolink] = true
 
-      md = MD2Starter::Markdown.new(render_extensions, parse_extensions)
-      md_doc = open(input).read
+      md          = MD2Starter::Markdown.new(render_extensions, parse_extensions)
+      md_doc      = open(input).read
       starter_doc = md.render(md_doc)
     end
   end

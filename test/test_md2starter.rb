@@ -1,6 +1,4 @@
 # frozen_string_literal: false
-require "tmpdir"
-
 require "md2starter"
 require "md2starter/markdown"
 require "md2starter/version"
@@ -18,13 +16,6 @@ class TestMD2Starter < Minitest::Test
     MD2Starter::Markdown.new(render_flags, flags).render(text)
   end
 
-  # 各種変換テスト
-  Dir.glob("test/fixtures/*.md").each do |file|
-    define_method("test_template_#{File.basename(file, ".md")}") do
-      assert_valid_from_markdown?(file.sub!(".md", ""))
-    end
-  end
-
   # version number
   ########################################################################
   def test_that_it_has_a_version_number
@@ -38,39 +29,12 @@ class TestMD2Starter < Minitest::Test
     assert_equal "Hello World.\n\n", @markdown.render("Hello World.\n")
   end
 
-    # href
+  # Various conversion tests from markdown file
   ########################################################################
-  def test_href_in_footnote
-    text = %Q[aaa [foo](https://example.jp/foo), [bar](https://example.jp/bar)]
-    rd = render_with({ link_in_footnote: true }, "aaa [foo](https://example.jp/foo), [bar](https://example.jp/bar)")
-
-    assert_equal %Q|\n\naaa foo@<fn>{2949f671e47d5c20864c22454f091e2e}, bar@<fn>{8c34f297678a720d835b740df219cbd1}\n\n\n//footnote[2949f671e47d5c20864c22454f091e2e][https://example.jp/foo]\n\n//footnote[8c34f297678a720d835b740df219cbd1][https://example.jp/bar]\n|, rd
-  end
-
-  # code
-  ########################################################################
-  def test_code_fence_with_caption
-    rd = render_with({fenced_code_blocks: true}, %Q[~~~ {caption="test"}\ndef foo\n  p "test"\nend\n~~~\n])
-    assert_equal %Q[\n//list[test]{\ndef foo\n  p "test"\nend\n//}\n], rd
-  end
-
-  def test_code_fence_without_flag
-    rd = render_with({}, %Q[~~~ {caption="test"}\ndef foo\n  p "test"\nend\n~~~\n])
-    assert_equal %Q[\n\n~~~ {caption="test"}\ndef foo\n  p "test"\nend\n~~~\n\n], rd
-  end
-
-  def test_code_fence_with_lang
-    rd = render_with({fenced_code_blocks: true}, %Q[~~~ruby\ndef foo\n  p "test"\nend\n~~~\n])
-    assert_equal %Q[\n//list[][ruby]{\ndef foo\n  p "test"\nend\n//}\n], rd
-  end
-
-  def test_code_fence_with_console
-    rd = render_with({fenced_code_blocks: true}, %Q[~~~console\ndef foo\n  p "test"\nend\n~~~\n])
-    assert_equal %Q[\n//list[][console]{\ndef foo\n  p "test"\nend\n//}\n], rd
-    rd = render_with({fenced_code_blocks: true},
-                      %Q[~~~console\ndef foo\n  p "test"\nend\n~~~\n],
-                     {enable_cmd: true})
-    assert_equal %Q[\n//cmd{\ndef foo\n  p "test"\nend\n//}\n], rd
+  Dir.glob("test/fixtures/*.md").each do |file|
+    define_method("test_template_#{File.basename(file, ".md")}") do
+      assert_valid_from_markdown?(file.sub!(".md", ""))
+    end
   end
 
   private

@@ -24,11 +24,6 @@ module MD2Starter
 
     protected
 
-    # def format
-    #   @format ||= (self.class.to_s =~ /ERB/ ? :erb : :html)
-    #   p self.class.to_s
-    # end
-
     def set_opts(opts)
       opts.banner = "Usage: md2starter INPUT_FILENAME_OR_DIRECTORY [OUTPUT_FILENAME_OR_DIRECTORY] [options]"
 
@@ -49,15 +44,23 @@ module MD2Starter
       opts.on('-d', '--delete', "Delete markdown files") do
         @options[:delete] = true
       end
+
+      opts.on('-m', '--math', "Math markdown enable") do
+        @options[:math] = true
+      end
     end
 
     def process!
       args = @args.dup
 
       @options[:input]  = file        = args.shift
+      @options[:input]  = file        = "-" unless file
       @options[:output] = destination = args.shift
 
-      @options[:input] = file = "-" unless file
+      if file == "-"
+        puts @opts.to_s
+        exit
+      end
 
       if File.directory?(@options[:input])
         Dir["#{@options[:input]}/**/*.md"].each { |file| _process(file, destination) }
@@ -82,7 +85,7 @@ module MD2Starter
       else
         starter_file = destination || starter_file
       end
-      
+
       fail(ArgumentError, "Source and destination files can't be the same.") if @options[:input] != '-' && file == starter_file
 
       in_file = if @options[:input] == "-"
@@ -92,7 +95,7 @@ module MD2Starter
       end
 
       @options[:output] = starter_file && starter_file != '-' ? File.open(starter_file, 'w') : $stdout
-      @options[:output].puts MD2Starter.convert!(in_file)
+      @options[:output].puts MD2Starter.convert!(in_file, @options)
       @options[:output].close
 
       File.delete(file) if @options[:delete]
