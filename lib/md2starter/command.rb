@@ -1,9 +1,9 @@
 require 'optparse'
 require 'md2starter'
+include MD2Starter
 
 module MD2Starter
   class Command
-
     def initialize(args)
       @args    = args
       @options = {}

@@ -1,3 +1,4 @@
+require_relative "md2starter/version"
 require_relative "md2starter/markdown"
 
 module MD2Starter

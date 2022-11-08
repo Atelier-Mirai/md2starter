@@ -83,12 +83,6 @@ module Redcarpet
       end
       alias_method :escape_comma, :escape_href
 
-      # codespan
-      ########################################################################
-      def codespan(code)
-        "@<code>{#{escape_inline(code)}}"
-      end
-
       # block code
       ########################################################################
       def block_code(code, language)
@@ -142,19 +136,39 @@ module Redcarpet
             "//abstract{\n#{code_text}\n//}\n\n"
           end
         elsif lang == "chapterauthor"
-          "//chapterauthor[#{caption}]\n\n"
+          p caption
+          if caption.nil? || caption.empty?
+            "//chapterauthor[#{code_text}]\n\n"
+          else
+            "//chapterauthor[#{caption}]\n\n"
+          end
         elsif lang == "include"
           filename = File&.basename(caption.to_s)
           "//list[][#{filename}][file=source/#{caption},1]{\n//}\n\n"
+        elsif lang == "image" || lang == "sideimage"
+          if !code_text.empty?
+            link = caption + '&content=' + code_text
+          else
+            link = caption
+          end
+          title = ""
+          alt_text = ""
+          image(link, title, alt_text)
         else
           "//list[][#{caption}][1]{\n#{code_text}\n//}\n\n"
         end
       end
 
+      # codespan
+      ########################################################################
+      def codespan(code)
+        "@<code>{#{escape_inline(code)}}"
+      end
+
       def block_quote(quote)
         quote_text = normal_text(quote).chomp
         quote_text.gsub!(/\A\n\n/, '')
-        "\n//quote{\n#{quote_text}\n//}\n"
+        "//quote{\n#{quote_text}//}\n\n"
       end
 
       def block_html(raw_html)
@@ -174,7 +188,7 @@ module Redcarpet
       # header
       ########################################################################
       def header(title, level, anchor="")
-        "\n#{"="*level} #{title}\n\n"
+        "#{"="*level} #{title}\n\n"
       end
 
       # table
@@ -183,6 +197,9 @@ module Redcarpet
         if text =~ /\ATable:(.*)\z/
           @table_caption = $1.strip
           "" # no output line
+        elsif text =~ /\Achapterauthor:(.*)\z/
+          @chapterauthor = $1.strip
+          "//chapterauthor[#{@chapterauthor}]\n\n"
         else
           # "\n\n#{text}\n\n"
           "#{text}\n\n"
@@ -224,38 +241,37 @@ module Redcarpet
       # image
       ########################################################################
       def image(link, title, alt_text)
-        allowed_params = %w(width border side sep boxwidth content)
+        allowed_params = %w(width border side sep boxwidth content caption)
 
         path, query = link.split("?")
         filename = File.basename(path, ".*")
 
         if query
           query.gsub!("&", ",")
-          # "width=50%,border=on"
-
           hash = query.split(",").map { |attr| attr&.split("=") }.to_h
-          # {"width"=>"50%", "border"=>"on"}
-          # {"width"=>"50%", "border"=>"on", "foo"=>"bar"}
 
-          # 許可されていないパラメタを削除
+          # Remove unauthorized parameters
           hash.each do |key, value|
             !allowed_params.include? key and hash.delete(key)
           end
 
-          # sideimage の為に
-          side = "side" if hash.key? "side"
-          width = hash.delete("width") if side
-          content = hash.delete("content")
-          content << "\n" if content
+          if hash.key? "caption"
+            alt_text = hash["caption"]
+            hash.delete("caption")
+          end
 
-          option = hash.map { |k, v| [k, v].join("=") }.join(",")
-          # "width=50%,border=on"
+          # for sideimage
+          sideimage = "side" if hash.key? "side"
+          width     = hash.delete("width") if sideimage
+          content   = hash.delete("content")
+          content << "\n" if content
+          option    = hash.map { |k, v| [k, v].join("=") }.join(",")
         end
 
-        if side
-          "//sideimage[#{filename}][#{width}][#{option}]{\n#{content}//}"
+        if sideimage
+          "//sideimage[#{filename}][#{width}][#{option}]{\n#{content}//}\n\n"
         else
-          "//image[#{filename}][#{alt_text}][#{option}]{\n//}"
+          "//image[#{filename}][#{alt_text}][#{option}]\n"
         end
       end
 
@@ -277,7 +293,8 @@ module Redcarpet
       # decoration
       ########################################################################
       def emphasis(text)
-        sandwitch_link('b', text)
+        # sandwitch_link('b', text)
+        sandwitch_link('a', text)
       end
 
       def double_emphasis(text)
@@ -338,7 +355,7 @@ module Redcarpet
       # hr / br
       ########################################################################
       def hrule
-        "\n//hr\n"
+        "//hr\n\n"
       end
 
       def linebreak

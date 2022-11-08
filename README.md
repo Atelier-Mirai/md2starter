@@ -14,12 +14,16 @@ Install it yourself as:
 You may convert files using the included executables `md2starter`.
 
     $ md2starter -h
-
     Usage: md2starter INPUT_FILENAME_OR_DIRECTORY [OUTPUT_FILENAME_OR_DIRECTORY] [options]
             --trace                      Show a full traceback on error
-        -d, --delete                     Delete Markdown files
+        -d, --delete                     Delete markdown files
+        -m, --math                       Math markdown enable
         -h, --help                       Show this message
         -v, --version                    Print version
+
+## Example
+
+
 
 ## License
 
@@ -37,4 +41,3 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## OFFICIAL REPOSITORY
 
 [https://github.com/Atelier-Mirai/md2starter](https://github.com/Atelier-Mirai/md2starter)
-
