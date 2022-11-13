@@ -1,3 +1,4 @@
+= raw html
 
 //list[][]{
 XXX: BLOCK_HTML: YOU SHOULD REWRITE IT

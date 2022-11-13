@@ -26,7 +26,7 @@ class TestMD2Starter < Minitest::Test
   ########################################################################
   def test_that_simple_one_liner_goes_to_review_starter
     assert_respond_to @markdown, :render
-    assert_equal "Hello World.\n\n", @markdown.render("Hello World.\n")
+    assert_equal "Hello World.\n\n", @markdown.render("Hello World.")
   end
 
   # Various conversion tests from markdown file

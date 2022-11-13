@@ -1,6 +1,4 @@
-
 === math
-
 //texequation[][]{
 
 //}
@@ -13,9 +11,7 @@
 \frac{n!}{k!(n-k)!} = \binom{n}{k}
 //}
 
-
 === output
-
 //output[][]{
 
 //}
@@ -32,9 +28,7 @@ LICENSE.txt
 README.md
 //}
 
-
 === terminal
-
 //terminal[][]{
 
 //}
@@ -47,9 +41,7 @@ $ ls
 $ ls
 //}
 
-
 === note
-
 //note[][]{
 
 //}
@@ -63,9 +55,7 @@ $ ls
 それは、早い時期に執筆を開始することです。
 //}
 
-
 === memo
-
 //memo[]{
 
 //}
@@ -78,9 +68,7 @@ $ ls
 メモ
 //}
 
-
 === tip
-
 //tip[]{
 
 //}
@@ -93,9 +81,7 @@ Tips
 Tips
 //}
 
-
 === info
-
 //info[]{
 
 //}
@@ -110,9 +96,7 @@ Tips
 すると天空の城への門が開きます。
 //}
 
-
 === warning
-
 //warning[]{
 
 //}
@@ -127,9 +111,7 @@ Tips
 大変危険ですので、決して唱えないでください。
 //}
 
-
 === important
-
 //important[]{
 
 //}
@@ -142,9 +124,7 @@ Tips
 重要事項です。
 //}
 
-
 === caution
-
 //caution[]{
 
 //}
@@ -159,9 +139,7 @@ Tips
 周りに人がいないことを確かめてから使用してください。
 //}
 
-
 === notice
-
 //notice[]{
 
 //}
@@ -176,9 +154,7 @@ Tips
 それ以外の方は入れないので、予めご了承下さい。
 //}
 
-
 === column
-
 ===[column] 
 
 
@@ -194,9 +170,7 @@ Tips
 
 ===[/column]
 
-
 === flushright
-
 //flushright{
 
 //}
@@ -208,10 +182,8 @@ Tips
 //flushright{
 右寄せできます
 //}
-
 
 === centering
-
 //centering{
 
 //}
@@ -223,10 +195,8 @@ Tips
 //centering{
 中央揃えできます
 //}
-
 
 === abstract
-
 //abstract{
 
 //}
@@ -251,19 +221,15 @@ Starterでは、章ごとにタイトルページを作成できます。
 Starterでは、章の概要を表す「abstract」が用意されています。
 Starterでは、章ごとにタイトルページを作成できます。
 //}
-
 
 === chapterauthor
-
-//chapterauthor[]
-
 //chapterauthor[]
 
 //chapterauthor[章の著者名]
 
+//chapterauthor[章の著者名]
 
 === include
-
 //list[][][file=source/,1]{
 //}
 
@@ -276,9 +242,7 @@ Starterでは、章ごとにタイトルページを作成できます。
 //list[][caption.html][file=source/work/caption.html,1]{
 //}
 
-
 === sonohoka
-
 //list[][][1]{
 
 //}
@@ -291,9 +255,7 @@ Starterでは、章ごとにタイトルページを作成できます。
 一般的なプログラムリストになります
 //}
 
-
 === 言語名なし
-
 //list[][][1]{
 
 //}

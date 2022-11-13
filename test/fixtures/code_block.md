@@ -219,7 +219,7 @@ Starterでは、章ごとにタイトルページを作成できます。
 ```
 
 ``` chapterauthor
-無効です
+章の著者名
 ```
 
 ``` chapterauthor:章の著者名

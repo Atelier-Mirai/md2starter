@@ -21,9 +21,7 @@ You may convert files using the included executables `md2starter`.
         -h, --help                       Show this message
         -v, --version                    Print version
 
-## Example
-
-
+See [USAGE.md](./USAGE.md) for more information on Markdown and Starter format notation.
 
 ## License
 
@@ -37,6 +35,10 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Author
 
 [Atelier Mirai](https://atelier-mirai.net)
+
+## Thanks
+
+This Gem is based on [html2slim](https://github.com/slim-template/html2slim) and [md2review](https://github.com/takahashim/md2review). We thank the authors.
 
 ## OFFICIAL REPOSITORY
 

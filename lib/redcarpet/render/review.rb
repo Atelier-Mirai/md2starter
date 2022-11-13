@@ -136,7 +136,6 @@ module Redcarpet
             "//abstract{\n#{code_text}\n//}\n\n"
           end
         elsif lang == "chapterauthor"
-          p caption
           if caption.nil? || caption.empty?
             "//chapterauthor[#{code_text}]\n\n"
           else
@@ -153,7 +152,7 @@ module Redcarpet
           end
           title = ""
           alt_text = ""
-          image(link, title, alt_text)
+          image(link, title, alt_text) + "\n\n"
         else
           "//list[][#{caption}][1]{\n#{code_text}\n//}\n\n"
         end
@@ -188,7 +187,7 @@ module Redcarpet
       # header
       ########################################################################
       def header(title, level, anchor="")
-        "#{"="*level} #{title}\n\n"
+        "#{"="*level} #{title}\n"
       end
 
       # table
@@ -200,6 +199,10 @@ module Redcarpet
         elsif text =~ /\Achapterauthor:(.*)\z/
           @chapterauthor = $1.strip
           "//chapterauthor[#{@chapterauthor}]\n\n"
+        elsif text =~ /\Ainclude:(.*)\z/
+            link = $1.strip
+            filename = File.basename(link)
+            "//list[][#{filename}][file=source/#{link},1]{\n//}\n\n"
         else
           # "\n\n#{text}\n\n"
           "#{text}\n\n"
@@ -269,9 +272,9 @@ module Redcarpet
         end
 
         if sideimage
-          "//sideimage[#{filename}][#{width}][#{option}]{\n#{content}//}\n\n"
+          "//sideimage[#{filename}][#{width}][#{option}]{\n#{content}//}"
         else
-          "//image[#{filename}][#{alt_text}][#{option}]\n"
+          "//image[#{filename}][#{alt_text}][#{option}]"
         end
       end
 
@@ -284,7 +287,7 @@ module Redcarpet
       def link(link, title, content)
         if content == "include"
           filename = File.basename(link)
-          "//list[][#{filename}][file=source/#{link},1]{\n//}\n"
+          "//list[][#{filename}][file=source/#{link},1]{\n//}"
         else
           "@<href>{#{link},#{content}}"
         end
@@ -293,8 +296,7 @@ module Redcarpet
       # decoration
       ########################################################################
       def emphasis(text)
-        # sandwitch_link('b', text)
-        sandwitch_link('a', text)
+        sandwitch_link('b', text)
       end
 
       def double_emphasis(text)
@@ -373,7 +375,7 @@ module Redcarpet
       end
 
       def footnote_def(text, number)
-        "\n//footnote[#{number}][#{text.strip}]\n"
+        "//footnote[#{number}][#{text.strip}]\n"
       end
 
       # ruby
